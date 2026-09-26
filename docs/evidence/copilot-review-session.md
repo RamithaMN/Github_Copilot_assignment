@@ -49,17 +49,18 @@ responsible for the authoritative pytest and plugin-validation results.
 
 ## Q1 before and after
 
-Before the instruction was added, the resumed summary contradicted the observed tool
-trace by denying reads that the trace showed. The human rejected that summary as
-evidence.
+Before the instruction was added, the first bounded review attempt guessed the tool
+names `read` and `search`. Copilot reported both as unknown tools and the attempt did
+not perform the intended review.
 
 The instruction added after that failure was:
 
 ```text
-When a resumed summary conflicts with the observed tool trace, treat the tool trace
-as authoritative and report only facts supported by it.
+Use only tool names exposed by the current Copilot session; never invent tool names.
+If a requested tool is unavailable, report that limitation and stop rather than guessing.
 ```
 
-After the instruction, the fresh reviewer session recorded the files it actually read,
-reported that it did not run shell commands, and made a bounded review finding. The
-fresh session is preserved in `copilot-review-session-2026-09-26.md`.
+After the instruction, the corrected session used `view`, `glob`, and `grep`, recorded
+the files it read, reported that it did not run shell commands, and made a bounded
+review finding. The later resumed-summary contradiction is also recorded as a separate
+trust failure; the trace-authority instruction was added for that case as well.
