@@ -98,6 +98,10 @@ The write loop remains separately gated: enable the exact label-update tool, req
 approval, apply `needs-attention`, then re-fetch to verify when a real stale candidate
 exists. No external write is claimed in this session.
 
+The account-wide repository selection audit is recorded in
+`docs/evidence/repository-selection.md`. It found zero open pull requests across
+`RamithaMN`, so no legitimate stale candidate existed for the write demonstration.
+
 The application remains separate from this assignment workflow:
 
 ```text
