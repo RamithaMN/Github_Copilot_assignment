@@ -3,8 +3,11 @@
 from __future__ import annotations
 
 import json
+import ssl
 import urllib.error
 import urllib.request
+
+import certifi
 from collections.abc import Callable, Mapping
 from typing import Any
 
@@ -96,7 +99,8 @@ class GitHubService:
 
         request = urllib.request.Request(url, data=encoded_body, headers=headers, method=method)
         try:
-            with urllib.request.urlopen(request, timeout=self.timeout) as response:
+            context = ssl.create_default_context(cafile=certifi.where())
+            with urllib.request.urlopen(request, timeout=self.timeout, context=context) as response:
                 return json.loads(response.read().decode("utf-8"))
         except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
             raise GitHubServiceError(f"GitHub request failed: {exc}") from exc
