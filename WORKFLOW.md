@@ -41,24 +41,23 @@ provide repeatable, task-specific workflows.
 
 ### Instruction added after a failure
 
-The observed failure was a resumed Copilot summary that contradicted its own read
-trace: the trace showed source and test files being inspected, while the summary said
-they had not been inspected. The added instruction is:
+The direct before/after example is the first bounded review attempt. Copilot guessed
+the tool names `read` and `search`, and the CLI reported them as unknown. The added
+instruction is:
 
 ```text
-When a resumed summary conflicts with the observed tool trace, treat the tool trace
-as authoritative and report only facts supported by it.
+Use only tool names exposed by the current Copilot session; never invent tool names.
+If a requested tool is unavailable, report that limitation and stop rather than guessing.
 ```
 
-Before: the resumed summary denied file reads that were visibly present in the tool
-trace, so the summary was rejected as evidence. After: the fresh reviewer session
-listed the files it inspected and explicitly stated that it did not run shell commands;
-the human accepted only those observed facts. The before/after record is in
+Before: `read` and `search` failed as unknown tools. After: the corrected session used
+the exposed `view`, `glob`, and `grep` tools, read the repository, and reported its
+permission boundary. The before/after record is in
 `docs/evidence/copilot-review-session.md` and
 `docs/evidence/copilot-review-session-2026-09-26.md`.
 
-The separate GitHub adapter rule remains a design constraint, not the claimed
-before/after agent-error example.
+The trace-authority instruction remains an additional safeguard based on the later
+resumed-summary contradiction.
 
 ### What was deliberately left out
 
