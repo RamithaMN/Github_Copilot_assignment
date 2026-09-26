@@ -15,7 +15,7 @@ metadata through an isolated service adapter.
 
 ## Requirements
 
-- Python 3.12 for the assignment target. Python 3.11 is also supported by the current implementation.
+- Python 3.12 for the assignment target. The implementation is also compatible with Python 3.11.
 - A GitHub token in `GITHUB_TOKEN` for authenticated metadata reads.
 
 ## Installation
@@ -51,8 +51,15 @@ GitHub Repository Health: OWNER/REPOSITORY
 [WARNING] Stale pull requests: inactive for more than 30 days: #23
 ```
 
-## Time spent
+## Verification evidence
 
-Record the final measured time in `WORKFLOW.md` at submission time. No time estimate is
-presented as observed evidence in this repository.
+The suite was verified with Python 3.12:
 
+```text
+13 passed in 0.03s
+```
+
+The observed Git activity window for implementation was 51 minutes, from the first
+implementation commit at 14:42:34 to the verification commit at 15:33:14 on
+2026-09-26 (+04:00). This is a lower-bound repository activity measure; it excludes
+unrecorded planning and review time.

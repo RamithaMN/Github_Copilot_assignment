@@ -75,6 +75,10 @@ Evidence for the Copilot review and its failure/correction is in
 `docs/evidence/copilot-review-session.md`. The implementation itself is verified
 through the pytest suite and manual inspection.
 
+The later approval-bound sessions are recorded in
+`docs/evidence/copilot-approval-prompts.md`. They show folder trust, approval of the
+Python 3.12 test command, and refusal of an out-of-scope path write.
+
 ## Q3 - MCP integration
 
 The actual scoped workspace configuration is `.github/mcp.json`; status is recorded in

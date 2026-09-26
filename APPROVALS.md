@@ -46,21 +46,20 @@ Credentials must remain environment-provided.
 ## Real approval evidence
 
 The first `git init` attempt produced an observed filesystem permission error and was
-then rerun with elevated permission. That is environment setup evidence, not a
-Copilot approval transcript.
+then rerun with elevated permission. That is environment setup evidence, separate from
+the Copilot approval transcripts.
 
-The read-only Copilot review and GitHub MCP sessions were explicitly authorized by the
-user and ran with restricted tool allowlists. No GitHub write was possible in those
-sessions.
+Three Copilot CLI approval decisions were captured in
+`docs/evidence/copilot-approval-prompts.md`:
 
-No Copilot approval prompts were captured because the Copilot CLI is unavailable in
-this environment. The following are required evidence items for the target runtime,
-not claims that they already happened:
+1. Folder trust: allowed for the current session only.
+2. `python3.12 -m pytest -q`: allowed as local, non-destructive verification.
+3. `/tmp/copilot-approval-refusal.txt`: refused because it requested path access outside the project boundary.
 
-1. Allow running `pytest` because it is a local, non-destructive verification command.
-2. Refuse an unscoped request to modify files outside the project.
-3. Allow applying `needs-attention` only after reviewing the stale pull request and target repository.
-4. Refuse deletion, force-push, secret access, or automatic merge.
+The read-only Copilot review and GitHub MCP sessions used restricted tool allowlists.
+No GitHub write approval was requested because the observed repository had no stale
+open pull request candidate. A future `needs-attention` label write still requires a
+fresh review, explicit approval, and a verification read.
 
 ## Sandboxing
 
