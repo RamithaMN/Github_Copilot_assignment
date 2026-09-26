@@ -41,18 +41,24 @@ provide repeatable, task-specific workflows.
 
 ### Instruction added after a failure
 
-The intended correction is:
+The observed failure was a resumed Copilot summary that contradicted its own read
+trace: the trace showed source and test files being inspected, while the summary said
+they had not been inspected. The added instruction is:
 
 ```text
-All external GitHub operations must go through github_service.py.
-Health-check functions must not directly call GitHub APIs.
+When a resumed summary conflicts with the observed tool trace, treat the tool trace
+as authoritative and report only facts supported by it.
 ```
 
-This prevents external calls from being mixed into business logic and keeps tests
-deterministic. The implementation and test suite enforce this boundary. A full
-before/after Copilot code-edit transcript is not claimed; the observed review session
-and its setup correction are recorded in
-`docs/evidence/copilot-review-session.md`.
+Before: the resumed summary denied file reads that were visibly present in the tool
+trace, so the summary was rejected as evidence. After: the fresh reviewer session
+listed the files it inspected and explicitly stated that it did not run shell commands;
+the human accepted only those observed facts. The before/after record is in
+`docs/evidence/copilot-review-session.md` and
+`docs/evidence/copilot-review-session-2026-09-26.md`.
+
+The separate GitHub adapter rule remains a design constraint, not the claimed
+before/after agent-error example.
 
 ### What was deliberately left out
 
