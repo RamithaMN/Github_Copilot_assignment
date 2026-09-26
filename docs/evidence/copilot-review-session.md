@@ -47,3 +47,19 @@ source and tests had not been inspected even though the session log showed them 
 read. That contradiction is recorded as a trust failure and is why the human remains
 responsible for the authoritative pytest and plugin-validation results.
 
+## Q1 before and after
+
+Before the instruction was added, the resumed summary contradicted the observed tool
+trace by denying reads that the trace showed. The human rejected that summary as
+evidence.
+
+The instruction added after that failure was:
+
+```text
+When a resumed summary conflicts with the observed tool trace, treat the tool trace
+as authoritative and report only facts supported by it.
+```
+
+After the instruction, the fresh reviewer session recorded the files it actually read,
+reported that it did not run shell commands, and made a bounded review finding. The
+fresh session is preserved in `copilot-review-session-2026-09-26.md`.

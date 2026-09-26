@@ -43,3 +43,26 @@ and verified the complete suite after the change.
 
 This is a bounded agent session: the agent inspected and identified the issue, while
 the human implemented and verified the follow-up.
+
+## Post-instruction rerun
+
+After adding the trace-authority instruction, I reran the same bounded agent with:
+
+```bash
+copilot -C . --agent repo-reviewer \
+  --available-tools view,glob,grep --mode interactive \
+  -i "Review the repository context and report only files actually inspected. Do not run shell commands or edit files. If a summary conflicts with the read trace, follow the trace."
+```
+
+The observed trace included:
+
+```text
+MD Read copilot-instructions.md 11 lines read
+PY Read main.py 38 lines read
+PY Read test_main.py 52 lines read
+```
+
+The session also reported that shell commands were disabled and did not edit files.
+This demonstrates the after behavior: the report names observed reads and preserves the
+no-shell boundary. Any code findings from this read-only session remain advisory until
+the human verifies them with tests or direct inspection.
