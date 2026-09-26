@@ -38,6 +38,15 @@ Use `--inactive-days` to change the stale pull-request threshold, for example:
 python -m src.main --path . --repo OWNER/REPOSITORY --inactive-days 45
 ```
 
+The normal command is read-only. To request the narrowly scoped
+`needs-attention` write for a stale PR, pass its number; the CLI validates the PR,
+asks for interactive confirmation, applies only that label, and performs a fresh
+read to verify it:
+
+```bash
+python -m src.main --path . --repo OWNER/REPOSITORY --apply-needs-attention 23
+```
+
 When GitHub is unavailable, GitHub-backed checks report `UNKNOWN`; local checks still run.
 
 ## How to test
@@ -62,7 +71,7 @@ GitHub Repository Health: OWNER/REPOSITORY
 The suite was verified with Python 3.12:
 
 ```text
-16 passed in 0.04s
+20 passed in 0.03s
 ```
 
 The observed Git activity window for implementation was 51 minutes, from the first

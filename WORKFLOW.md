@@ -111,14 +111,16 @@ decision was empty and no write was attempted. Evidence is in
 The write path was tested against controlled PR #4 with the exact MCP tools enabled:
 `issue_write`, `issue_read`, `pull_request_read`, and `label_write`. Copilot fetched
 the PR, stated that the PR was not 30-day stale, requested approval for only the
-`needs-attention` label, and received approval. GitHub then rejected the MCP write
-with `403: Must have admin rights to Repository`; the agent stopped without a
-fallback write and an independent read confirmed the PR remained unlabeled.
+`needs-attention` label, and received approval. The first attempt returned
+`403: Must have admin rights to Repository`. The setup was corrected by supplying
+the authenticated runtime-only MCP header, then the approved retry applied the label
+and re-fetched the PR to verify it. An independent `gh` read confirmed the same
+external state.
 
 There was no open PR older than 30 days in the controlled repositories, so the
 session used `inactive_days=0` only as a clearly marked action-path demo. It does not
 claim that PR #4 satisfied the default 30-day stale rule. The full evidence, including
-the failed write and context-cost analysis, is in
+the failed first iteration, successful retry, and context-cost analysis, is in
 `docs/evidence/github-mcp-write-attempt.md`.
 
 The account-wide repository selection audit is recorded in
@@ -132,8 +134,9 @@ CLI -> github_service.py -> GitHub REST API
 Copilot agent -> GitHub MCP server -> GitHub state/actions
 ```
 
-The assignment's successful-write loop is therefore blocked by the installed
-managed MCP permission policy, not hidden behind an unverified CLI or REST write.
+The assignment's successful-write loop is demonstrated as:
+`FETCH -> DECIDE -> APPROVE -> ACT -> RE-FETCH -> VERIFY`. The first failed
+iteration and the corrected setup are retained as evidence rather than hidden.
 
 ## Q4 - Plugin and approval governance
 
@@ -155,15 +158,14 @@ credentials, or permit GitHub writes. Vetting and proposed approval boundaries a
 - `pytest` was not initially installed; it is declared in `requirements.txt` and must be installed in the project virtual environment before verification.
 - The first Copilot review attempt used invalid tool names and initially detected the plugin only as a Codex-format package; both issues were corrected and recorded in the evidence file.
 - The resumed Copilot review contradicted its own observed read trace, so its summary was not accepted as authoritative evidence.
-- The GitHub MCP write attempt reached explicit approval but was rejected with `403: Must have admin rights to Repository`; the label was not applied, and the failure is documented rather than replaced with a CLI or REST claim.
+- The first GitHub MCP write attempt reached explicit approval but was rejected with `403: Must have admin rights to Repository`. Adding the runtime-only Authorization header fixed the setup; the approved retry applied and verified the label. Both iterations are documented.
 - Automatic GitHub comments were deliberately not implemented; the planned external write is limited to an explicitly approved label action.
 
 ### What I would do differently with another week
 
 Run the project in the target Copilot environment, capture the three required agentic
 transcripts and real approval prompts, validate the exact Copilot plugin schema, and
-complete the live MCP fetch-decide-act-verify demonstration against a controlled test
-repository.
+repeat the live MCP loop against a repository with a genuinely 30-day-stale PR.
 
 ### How Copilot was used for this submission
 
