@@ -10,6 +10,7 @@ from src.checker import (
     check_stale_pull_requests,
     check_tests,
     find_stale_pull_requests,
+    run_github_checks,
 )
 from src.models import Status
 
@@ -50,6 +51,24 @@ def test_stale_boundary_is_strictly_more_than_thirty_days():
     assert [item.number for item in stale] == [2]
 
 
+def test_run_github_checks_uses_configured_inactive_days():
+    now = datetime(2026, 1, 31, 12, tzinfo=timezone.utc)
+
+    class Service:
+        def list_open_issues(self, repository):
+            return []
+
+        def list_open_pull_requests(self, repository):
+            return [
+                {"number": 7, "title": "Quiet PR", "updated_at": "2025-12-22T12:00:00Z"}
+            ]
+
+    results = run_github_checks(Service(), "owner/repo", now=now, inactive_days=45)
+
+    assert results[1].status is Status.PASS
+    assert results[1].message == "no open pull requests inactive for more than 45 days"
+
+
 def test_malformed_pull_request_data_becomes_unknown():
     class Service:
         def list_open_pull_requests(self, repository):
@@ -66,4 +85,3 @@ def test_github_failures_become_unknown():
 
     result = check_open_issues(Service(), "owner/repo")
     assert result.status is Status.UNKNOWN
-

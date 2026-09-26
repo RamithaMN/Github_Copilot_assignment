@@ -18,9 +18,10 @@ def test_main_orchestrates_checks_and_renders_report(monkeypatch, tmp_path, caps
         calls["path"] = path
         return local_results
 
-    def fake_github_checks(service, repository):
+    def fake_github_checks(service, repository, *, inactive_days=30):
         calls["service"] = service
         calls["repository"] = repository
+        calls["inactive_days"] = inactive_days
         return github_results
 
     monkeypatch.setattr(main_module, "GitHubService", lambda token=None: FakeService())
@@ -35,6 +36,28 @@ def test_main_orchestrates_checks_and_renders_report(monkeypatch, tmp_path, caps
     assert calls["path"] == tmp_path
     assert isinstance(calls["service"], FakeService)
     assert calls["repository"] == "octo/project"
+    assert calls["inactive_days"] == 30
+
+
+def test_main_passes_inactive_days_to_github_checks(monkeypatch, tmp_path, capsys):
+    captured = {}
+
+    class FakeService:
+        pass
+
+    def fake_github_checks(service, repository, *, inactive_days=30):
+        captured["inactive_days"] = inactive_days
+        return []
+
+    monkeypatch.setattr(main_module, "GitHubService", lambda token=None: FakeService())
+    monkeypatch.setattr(main_module, "run_local_checks", lambda path: [])
+    monkeypatch.setattr(main_module, "run_github_checks", fake_github_checks)
+
+    assert main_module.main(
+        ["--path", str(tmp_path), "--repo", "octo/project", "--inactive-days", "45"]
+    ) == 0
+
+    assert captured["inactive_days"] == 45
 
 
 @pytest.mark.parametrize(

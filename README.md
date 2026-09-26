@@ -9,7 +9,7 @@ metadata through an isolated service adapter.
 
 - Checks README, `.gitignore`, tests, dependency configuration, CI workflows, and docs.
 - Counts open issues.
-- Finds open pull requests inactive for more than 30 days using `updated_at`.
+- Finds open pull requests inactive for more than 30 days by default, using `updated_at`.
 - Reports `PASS`, `WARNING`, `FAIL`, or `UNKNOWN` without inventing an overall score.
 - Keeps network access behind `src/github_service.py` so it can be mocked in tests.
 
@@ -30,6 +30,12 @@ python -m pip install -r requirements.txt
 
 ```bash
 python -m src.main --path . --repo OWNER/REPOSITORY
+```
+
+Use `--inactive-days` to change the stale pull-request threshold, for example:
+
+```bash
+python -m src.main --path . --repo OWNER/REPOSITORY --inactive-days 45
 ```
 
 When GitHub is unavailable, GitHub-backed checks report `UNKNOWN`; local checks still run.

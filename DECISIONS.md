@@ -56,3 +56,11 @@
 - Cost accepted: results are less convenient to rank.
 - What would change my mind: a validated scoring policy with user-agreed weights.
 
+## Decision 9 - Configurable stale threshold with a stable default
+
+- Choice: expose `--inactive-days` while keeping the assignment's 30-day default.
+- Alternative: hard-code 30 days or introduce a full policy configuration file.
+- Cost accepted: the CLI has one additional option and callers can choose a
+  threshold that differs from the assignment default.
+- What would change my mind: a repository policy standard that requires all
+  checks to come from a shared configuration document.
