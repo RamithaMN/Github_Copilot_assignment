@@ -22,16 +22,18 @@ does not expose GitHub writes.
 The write path was tested against controlled PR #4 in
 `RamithaMN/Github_Copilot_assignment`. Copilot was started with the exact additional
 tools `issue_write`, `issue_read`, `pull_request_read`, and `label_write`, and it
-requested approval immediately before the `issue_write` call. The approval was
-granted, but GitHub returned `403: Must have admin rights to Repository`. The PR
-remained unlabeled, and no successful external write is claimed.
+requested approval immediately before the `issue_write` call. The first approved
+attempt returned `403: Must have admin rights to Repository`. The setup was corrected
+by adding an authenticated runtime-only `Authorization` header, and the approved
+retry applied `needs-attention`. Copilot re-fetched the PR and verified the label;
+an independent `gh` read confirmed it.
 
 The repository had no open PR older than 30 days, so the session used the product's
 explicit `inactive_days=0` demo override only to exercise the action boundary. PR #4
 was created on 2026-09-26 and was explicitly not described as 30-day stale. The
 default product rule remains more than 30 days, and its boundary is covered by tests.
 
-The complete attempted loop and the policy block are recorded in
+The complete failed-first-iteration and successful-retry loop are recorded in
 `docs/evidence/github-mcp-write-attempt.md`.
 
 ## Context cost and trimming
@@ -44,10 +46,12 @@ and deletion tools were excluded.
 
 The MCP prompt narrowed the context to one repository and one PR, requested only
 `number`, `updated_at`, state, and labels, and omitted bodies, diffs, files, comments,
-and check runs. This reduces prompt and response size, but the narrow response also
-caused the list call to omit labels; a second label-read call was required and failed
-under the managed server's repository-permission policy. That extra call and the
-two-server initialization are the measured costs of the scoped setup.
+and check runs. This reduced prompt and response size. The list response still did
+not contain labels, so a second label-read call was required; after the runtime
+authentication fix, that re-fetch returned the label. The extra verification call,
+the two-server initialization, and the added write-tool descriptions are the measured
+costs of the scoped setup.
 
-The configuration intentionally exposes only the operations needed for the read loop.
-Credentials belong in the environment, never in this repository.
+Each configuration intentionally exposes only the operations needed for its loop:
+read-only metadata tools in the default server and the separately named approved-write
+server. Credentials belong in the environment, never in this repository.

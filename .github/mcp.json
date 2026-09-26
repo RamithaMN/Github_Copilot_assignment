@@ -14,6 +14,9 @@
     "github-mcp-server-approved-write": {
       "type": "http",
       "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${COPILOT_MCP_GITHUB_TOKEN}"
+      },
       "tools": [
         "list_pull_requests",
         "get_pull_request",
