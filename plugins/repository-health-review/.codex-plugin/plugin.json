@@ -1,0 +1,18 @@
+{
+  "name": "repository-health-review",
+  "version": "0.1.0",
+  "description": "Repository Health Review plugin",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Repository Health Review",
+    "shortDescription": "Use Repository Health Review in Codex.",
+    "longDescription": "Repository Health Review adds a local Codex plugin scaffold.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "Help me use Repository Health Review."
+  }
+}

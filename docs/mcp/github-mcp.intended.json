@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "github": {
+      "description": "Scoped GitHub metadata and label operations for the assignment demo.",
+      "requiredEnvironment": ["GITHUB_TOKEN"],
+      "allowedOperations": [
+        "list_open_issues",
+        "list_open_pull_requests",
+        "apply_label"
+      ],
+      "writeApprovalRequired": true
+    }
+  }
+}
+
