@@ -46,7 +46,7 @@ the human implemented and verified the follow-up.
 
 ## Post-instruction rerun
 
-After adding the trace-authority instruction, I reran the same bounded agent with:
+After adding the tool-name and trace-authority instructions, I reran the same bounded agent with:
 
 ```bash
 copilot -C . --agent repo-reviewer \
@@ -63,6 +63,6 @@ PY Read test_main.py 52 lines read
 ```
 
 The session also reported that shell commands were disabled and did not edit files.
-This demonstrates the after behavior: the report names observed reads and preserves the
-no-shell boundary. Any code findings from this read-only session remain advisory until
-the human verifies them with tests or direct inspection.
+This demonstrates the after behavior: the report names observed reads, uses exposed
+tool names, and preserves the no-shell boundary. Any code findings from this read-only
+session remain advisory until the human verifies them with tests or direct inspection.
