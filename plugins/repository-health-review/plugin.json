@@ -1,0 +1,6 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "repository-health-review",
+  "version": "0.1.0",
+  "description": "Evidence-backed repository health review for Copilot CLI."
+}

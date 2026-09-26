@@ -49,6 +49,10 @@ The first `git init` attempt produced an observed filesystem permission error an
 then rerun with elevated permission. That is environment setup evidence, not a
 Copilot approval transcript.
 
+The read-only Copilot review and GitHub MCP sessions were explicitly authorized by the
+user and ran with restricted tool allowlists. No GitHub write was possible in those
+sessions.
+
 No Copilot approval prompts were captured because the Copilot CLI is unavailable in
 this environment. The following are required evidence items for the target runtime,
 not claims that they already happened:
@@ -68,4 +72,3 @@ to the documented GitHub integration. Never place tokens in files or command out
 If MCP, plugin activation, Copilot CLI, or external writes are blocked, retain the
 intended configuration and document the limitation. Use mocked GitHub responses for
 product tests and do not claim the blocked live workflow succeeded.
-
