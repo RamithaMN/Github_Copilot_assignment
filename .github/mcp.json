@@ -10,6 +10,17 @@
         "list_pull_requests",
         "get_pull_request"
       ]
+    },
+    "github-mcp-server-approved-write": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "tools": [
+        "list_pull_requests",
+        "get_pull_request",
+        "issue_read",
+        "label_write",
+        "issue_write"
+      ]
     }
   }
 }

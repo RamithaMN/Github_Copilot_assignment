@@ -108,9 +108,18 @@ GitHub MCP pull-request read tool. It returned no open pull requests, so the sta
 decision was empty and no write was attempted. Evidence is in
 `docs/evidence/github-mcp-read-loop.md`.
 
-The write loop remains separately gated: enable the exact label-update tool, request
-approval, apply `needs-attention`, then re-fetch to verify when a real stale candidate
-exists. No external write is claimed in this session.
+The write path was tested against controlled PR #4 with the exact MCP tools enabled:
+`issue_write`, `issue_read`, `pull_request_read`, and `label_write`. Copilot fetched
+the PR, stated that the PR was not 30-day stale, requested approval for only the
+`needs-attention` label, and received approval. GitHub then rejected the MCP write
+with `403: Must have admin rights to Repository`; the agent stopped without a
+fallback write and an independent read confirmed the PR remained unlabeled.
+
+There was no open PR older than 30 days in the controlled repositories, so the
+session used `inactive_days=0` only as a clearly marked action-path demo. It does not
+claim that PR #4 satisfied the default 30-day stale rule. The full evidence, including
+the failed write and context-cost analysis, is in
+`docs/evidence/github-mcp-write-attempt.md`.
 
 The account-wide repository selection audit is recorded in
 `docs/evidence/repository-selection.md`. It found zero open pull requests across
@@ -122,6 +131,9 @@ The application remains separate from this assignment workflow:
 CLI -> github_service.py -> GitHub REST API
 Copilot agent -> GitHub MCP server -> GitHub state/actions
 ```
+
+The assignment's successful-write loop is therefore blocked by the installed
+managed MCP permission policy, not hidden behind an unverified CLI or REST write.
 
 ## Q4 - Plugin and approval governance
 
@@ -143,6 +155,7 @@ credentials, or permit GitHub writes. Vetting and proposed approval boundaries a
 - `pytest` was not initially installed; it is declared in `requirements.txt` and must be installed in the project virtual environment before verification.
 - The first Copilot review attempt used invalid tool names and initially detected the plugin only as a Codex-format package; both issues were corrected and recorded in the evidence file.
 - The resumed Copilot review contradicted its own observed read trace, so its summary was not accepted as authoritative evidence.
+- The GitHub MCP write attempt reached explicit approval but was rejected with `403: Must have admin rights to Repository`; the label was not applied, and the failure is documented rather than replaced with a CLI or REST claim.
 - Automatic GitHub comments were deliberately not implemented; the planned external write is limited to an explicitly approved label action.
 
 ### What I would do differently with another week
