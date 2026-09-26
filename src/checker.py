@@ -121,9 +121,17 @@ def check_stale_pull_requests(
     except Exception as exc:
         return CheckResult("Stale pull requests", Status.UNKNOWN, f"GitHub data unavailable: {exc}")
     if not stale:
-        return CheckResult("Stale pull requests", Status.PASS, "no open pull requests inactive for more than 30 days")
+        return CheckResult(
+            "Stale pull requests",
+            Status.PASS,
+            f"no open pull requests inactive for more than {inactive_days} days",
+        )
     numbers = ", ".join(f"#{item.number}" for item in stale)
-    return CheckResult("Stale pull requests", Status.WARNING, f"inactive for more than 30 days: {numbers}")
+    return CheckResult(
+        "Stale pull requests",
+        Status.WARNING,
+        f"inactive for more than {inactive_days} days: {numbers}",
+    )
 
 
 def run_github_checks(
@@ -131,10 +139,11 @@ def run_github_checks(
     repository: str,
     *,
     now: datetime | None = None,
+    inactive_days: int = 30,
 ) -> list[CheckResult]:
     return [
         check_open_issues(service, repository),
-        check_stale_pull_requests(service, repository, now=now),
+        check_stale_pull_requests(service, repository, now=now, inactive_days=inactive_days),
     ]
 
 

@@ -72,13 +72,22 @@ Its scope is read-only review with evidence-backed findings.
 
 The bounded sessions are:
 
-1. Add stale pull-request detection using `updated_at` and the 30-day rule. This was implemented and verified by the local pytest suite; no Copilot code-edit transcript is claimed.
+1. Implement the configurable stale-PR threshold in a multi-step session. A
+   deliberately failing CLI test was prepared first. Copilot ran it, read the
+   argparse failure, changed `src/main.py`, `src/checker.py`, tests, and
+   `README.md`, reran the focused test, and ran the full suite. The complete
+   evidence is in `docs/evidence/agent-session-q2-cli-threshold.md`.
 2. Correct the plugin integration after Copilot reported that the plugin directory lacked a root `plugin.json`.
 3. Run the read-only repository-reviewer agent with only `view`, `glob`, and `grep` available. The session inspected the repository and produced an observed tool trace.
 
 Evidence for the Copilot review and its failure/correction is in
 `docs/evidence/copilot-review-session.md`. The implementation itself is verified
 through the pytest suite and manual inspection.
+
+The first session is the primary Q2 handoff evidence: its focused failure,
+delegation boundary, approval decisions, multi-file edit, corrective rerun, and
+independent verification are all recorded. The older stale-PR session remains
+historical context, but is not used as the sole evidence for the requirement.
 
 The later approval-bound sessions are recorded in
 `docs/evidence/copilot-approval-prompts.md`. They show folder trust, approval of the
