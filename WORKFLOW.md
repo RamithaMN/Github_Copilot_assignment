@@ -79,6 +79,10 @@ The later approval-bound sessions are recorded in
 `docs/evidence/copilot-approval-prompts.md`. They show folder trust, approval of the
 Python 3.12 test command, and refusal of an out-of-scope path write.
 
+A fresh read-only `repo-reviewer` session and its human follow-up are recorded in
+`docs/evidence/copilot-review-session-2026-09-26.md`. The agent found the missing CLI
+coverage; the human added `tests/test_main.py` and reran the full Python 3.12 suite.
+
 ## Q3 - MCP integration
 
 The actual scoped workspace configuration is `.github/mcp.json`; status is recorded in
