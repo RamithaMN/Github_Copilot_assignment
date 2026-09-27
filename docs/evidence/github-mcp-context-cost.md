@@ -25,6 +25,18 @@ name characters. The approved-write surface fell from 5 tools to 4, a reduction 
 the earlier version was 29 lines and 658 bytes. These are configuration proxies, not
 claims about the provider's hidden tokenization.
 
+## Measured follow-up
+
+A read-only follow-up run with `--usage-output-file` captured exact telemetry. It
+reported `9,195` input tokens, `65` output tokens, `4,559` cache-read tokens, and
+`4,630` cache-write tokens. Its session checkpoint attributed `1,008` tokens to the
+two enabled MCP tool definitions. The MCP call returned `[]` in `2` result-content
+bytes and took `3,092 ms` of API time. The full redacted receipt is
+`docs/evidence/github-mcp-token-telemetry-2026-09-27.md`.
+
+This is a new measured read-only run. It does not retroactively measure the earlier
+write session, whose exact telemetry was not captured.
+
 For a future measurement, capture `/context` before and after MCP activation, capture
 `/usage` at the end of the session, and enable Copilot CLI OpenTelemetry file export
 with `COPILOT_OTEL_ENABLED=true` and `COPILOT_OTEL_FILE_EXPORTER_PATH`. The OTel
