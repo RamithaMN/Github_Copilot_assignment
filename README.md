@@ -5,6 +5,24 @@
 A small Python CLI that checks repository hygiene locally and reads selected GitHub
 metadata through an isolated service adapter.
 
+## Architecture
+
+```mermaid
+flowchart LR
+    User["Operator"] --> CLI["Python CLI\npython -m src.main"]
+    CLI --> Local["Local repository checks"]
+    CLI --> Adapter["src/github_service.py"]
+    Adapter --> REST["GitHub REST API"]
+
+    Context[".github instructions\nprompts and agents"] --> Copilot["Copilot agent"]
+    Plugin["Local review plugin"] --> Copilot
+    Copilot --> MCP["GitHub MCP server"]
+    MCP --> GitHub["GitHub metadata and\napproved label action"]
+```
+
+The product CLI and the Copilot assignment workflow are intentionally separate:
+the CLI uses the REST adapter, while Copilot uses MCP for bounded agent operations.
+
 ## Features
 
 - Checks README, `.gitignore`, tests, dependency configuration, CI workflows, and docs.
