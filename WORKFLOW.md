@@ -171,6 +171,13 @@ different repository. The actual manifest, state inspection, permission persiste
 sandbox, and enterprise-policy receipts are in
 `docs/evidence/q4-permission-state-2026-09-27.md`.
 
+## Q5 - Decisions and failures
+
+`DECISIONS.md` records ten real forks in the road. Every decision now has a direct
+receipt to the implementation commit, test, agent session, or external MCP evidence
+that supports it. The final `## What didn't work` section below records observed
+failures, abandoned paths, and what would change with another week.
+
 ## What didn't work
 
 ### Dead ends, failures, and abandoned ideas
