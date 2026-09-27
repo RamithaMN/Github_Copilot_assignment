@@ -129,6 +129,15 @@ The actual scoped workspace configuration is `.github/mcp.json`; status is recor
 `docs/MCP_STATUS.md`. The older `docs/mcp/github-mcp.intended.json` is retained as the
 assignment-facing design record.
 
+### What the agent is connected to and why
+
+The agent is connected to GitHub's remote MCP server. The default server exposes only
+`list_pull_requests` and `get_pull_request`, which are sufficient to fetch open PR
+metadata and classify staleness. A separately named approved-write server exposes
+those reads plus `issue_read` and `issue_write`, because the demonstrated external
+action is one approval-gated `needs-attention` label update. No broader GitHub tool
+surface is needed for that loop.
+
 The claim-to-receipt map is `docs/evidence/EVIDENCE_INDEX.md`. Redacted raw excerpts
 from the Copilot event store are in `docs/evidence/raw/`; they preserve the relevant
 commands, approval payload, errors, and outcomes without committing credentials or
@@ -139,6 +148,37 @@ default server, and four pull-request/issue tools for the separately named appro
 write server. Failure behavior and the limits of the Copilot transport are in
 `docs/mcp/FAILURE_HANDLING.md`; measured configuration cost is in
 `docs/evidence/github-mcp-context-cost.md`.
+
+The failure policy is explicit. A slow or unresponsive server ends in a timeout,
+`UNKNOWN`, and no write; a server outage or authentication failure is reported as
+unavailable with no approval request or write; and malformed or incomplete data is
+treated as `UNKNOWN` without inferring missing `number`, `updated_at`, state, or
+labels. A human may retry one transient read, but writes are never retried
+automatically. The deterministic policy harness exercised all three cases and
+recorded `UNKNOWN` plus `write_attempted: false` in
+`docs/evidence/github-mcp-failure-simulations-2026-09-27.md`. This is a policy
+boundary test, not a claim that Copilot's private MCP transport was replaced.
+
+GitHub titles, bodies, comments, issues, pull requests, and labels are untrusted
+data, never instructions. The damage controls are the narrow read/write allowlists,
+no shell, web, merge, branch, file-write, deletion, or Actions tools, one fixed
+label, exact PR selection, explicit approval immediately before the write, runtime-
+only credentials, and a fresh verification read after the action.
+
+The measured context cost is recorded rather than estimated. A fresh read-only run
+used `1,008` MCP tool-definition tokens, `9,195` input tokens, and `65` output
+tokens. The historical successful write session reported `10,031` total
+tool-definition tokens; Copilot did not provide a provider-supported MCP-only split
+inside that total. The accepted costs were two-server initialization, the added
+write-tool descriptions, and one extra verification read when the first list
+response omitted labels.
+
+The context was deliberately trimmed to one repository and one PR, requesting only
+the PR number, `updated_at`, state, and labels. Bodies, comments, reviews, diffs,
+files, check runs, repository-wide search, merge, branch, deletion, and Actions
+tools were omitted. The full telemetry and configuration-size receipts are in
+`docs/evidence/github-mcp-context-cost.md` and
+`docs/evidence/github-mcp-historical-token-telemetry.md`.
 
 The read loop was exercised against `rohitsundaram/Family-office-IC-agent` using the
 GitHub MCP pull-request read tool. It returned no open pull requests, so the stale
