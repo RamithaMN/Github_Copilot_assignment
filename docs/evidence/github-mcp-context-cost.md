@@ -1,8 +1,14 @@
 # GitHub MCP Context Cost
 
-The Copilot CLI did not provide token accounting for the MCP handshake in the
-captured session. To avoid inventing token counts, this record uses reproducible
-character counts as a lower-level proxy and records the exact tool reduction.
+The captured MCP session did not record MCP-specific token telemetry. Copilot CLI
+does support `/context`, which reports MCP tool context usage, and `/usage`, which
+reports session and per-model token totals. Copilot CLI can also export token and
+tool metrics through OpenTelemetry. None of those measurements were enabled or
+saved during the historical MCP run, so the exact historical MCP overhead is not
+retroactively reconstructable.
+
+This record therefore uses reproducible character counts as a lower-level proxy and
+records the exact tool reduction. The proxy is clearly not a provider token count.
 
 Measured from the committed configuration on 2026-09-27:
 
@@ -18,6 +24,14 @@ name characters. The approved-write surface fell from 5 tools to 4, a reduction 
 11 tool name characters. The final `.github/mcp.json` is 25 lines and 561 bytes;
 the earlier version was 29 lines and 658 bytes. These are configuration proxies, not
 claims about the provider's hidden tokenization.
+
+For a future measurement, capture `/context` before and after MCP activation, capture
+`/usage` at the end of the session, and enable Copilot CLI OpenTelemetry file export
+with `COPILOT_OTEL_ENABLED=true` and `COPILOT_OTEL_FILE_EXPORTER_PATH`. The OTel
+`gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`, and
+`gen_ai.tool.definitions` attributes can then be retained as the receipt. See the
+[Copilot CLI context-management documentation](https://docs.github.com/en/copilot/concepts/agents/copilot-cli/context-management)
+and [CLI command reference](https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference).
 
 The higher-value context trimming was semantic: one repository and one PR, with
 `number`, `updated_at`, state, and labels requested. Bodies, diffs, files, comments,
