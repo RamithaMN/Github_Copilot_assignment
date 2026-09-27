@@ -38,9 +38,9 @@ The complete failed-first-iteration and successful-retry loop are recorded in
 
 ## Context cost and trimming
 
-The read-only server exposes five tools: `get_file_contents`, `list_issues`,
-`issue_read`, `list_pull_requests`, and `get_pull_request`. The write attempt added
-only the four tools needed for label setup, label reads, and one issue/PR update.
+The final read-only server exposes only two tools: `list_pull_requests` and
+`get_pull_request`. The separately named approved-write server exposes only four:
+`list_pull_requests`, `get_pull_request`, `issue_read`, and `issue_write`.
 Repository-wide search, diffs, comments, actions, merges, branch writes, file writes,
 and deletion tools were excluded.
 
@@ -53,5 +53,11 @@ the two-server initialization, and the added write-tool descriptions are the mea
 costs of the scoped setup.
 
 Each configuration intentionally exposes only the operations needed for its loop:
-read-only metadata tools in the default server and the separately named approved-write
-server. Credentials belong in the environment, never in this repository.
+pull-request reads in the default server, plus issue/label action support in the
+separately named approved-write server. Credentials belong in the environment, never
+in this repository.
+
+Failure handling is specified in `docs/mcp/FAILURE_HANDLING.md`. The Copilot CLI did
+not expose a portable per-server timeout field, so the repository documents a bounded
+session policy: one human-directed retry for a transient read, no automatic write
+retry, and no action after an outage or malformed response.

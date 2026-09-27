@@ -103,6 +103,12 @@ The actual scoped workspace configuration is `.github/mcp.json`; status is recor
 `docs/MCP_STATUS.md`. The older `docs/mcp/github-mcp.intended.json` is retained as the
 assignment-facing design record.
 
+The final tool surface is intentionally small: two pull-request read tools for the
+default server, and four pull-request/issue tools for the separately named approved-
+write server. Failure behavior and the limits of the Copilot transport are in
+`docs/mcp/FAILURE_HANDLING.md`; measured configuration cost is in
+`docs/evidence/github-mcp-context-cost.md`.
+
 The read loop was exercised against `rohitsundaram/Family-office-IC-agent` using the
 GitHub MCP pull-request read tool. It returned no open pull requests, so the stale
 decision was empty and no write was attempted. Evidence is in
