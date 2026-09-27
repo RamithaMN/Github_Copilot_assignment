@@ -9,7 +9,7 @@ metadata through an isolated service adapter.
 
 - Checks README, `.gitignore`, tests, dependency configuration, CI workflows, and docs.
 - Counts open issues.
-- Finds open pull requests inactive for more than 30 days using `updated_at`.
+- Finds open pull requests inactive for more than 30 days by default, using `updated_at`.
 - Reports `PASS`, `WARNING`, `FAIL`, or `UNKNOWN` without inventing an overall score.
 - Keeps network access behind `src/github_service.py` so it can be mocked in tests.
 
@@ -30,6 +30,21 @@ python -m pip install -r requirements.txt
 
 ```bash
 python -m src.main --path . --repo OWNER/REPOSITORY
+```
+
+Use `--inactive-days` to change the stale pull-request threshold, for example:
+
+```bash
+python -m src.main --path . --repo OWNER/REPOSITORY --inactive-days 45
+```
+
+The normal command is read-only. To request the narrowly scoped
+`needs-attention` write for a stale PR, pass its number; the CLI validates the PR,
+asks for interactive confirmation, applies only that label, and performs a fresh
+read to verify it:
+
+```bash
+python -m src.main --path . --repo OWNER/REPOSITORY --apply-needs-attention 23
 ```
 
 When GitHub is unavailable, GitHub-backed checks report `UNKNOWN`; local checks still run.
@@ -56,10 +71,11 @@ GitHub Repository Health: OWNER/REPOSITORY
 The suite was verified with Python 3.12:
 
 ```text
-16 passed in 0.04s
+20 passed in 0.04s
 ```
 
 The observed Git activity window for implementation was 51 minutes, from the first
-implementation commit at 14:42:34 to the verification commit at 15:33:14 on
-2026-09-26 (+04:00). This is a lower-bound repository activity measure; it excludes
-unrecorded planning and review time.
+implementation commit [`45a2133`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/45a2133)
+at 14:42:34 to the verification commit [`e42a709`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/e42a709)
+at 15:33:14 on 2026-09-26 (+04:00). This is a lower-bound repository activity
+measure; it excludes unrecorded planning and review time.

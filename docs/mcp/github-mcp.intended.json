@@ -4,12 +4,12 @@
       "description": "Scoped GitHub metadata and label operations for the assignment demo.",
       "requiredEnvironment": ["GITHUB_TOKEN"],
       "allowedOperations": [
-        "list_open_issues",
-        "list_open_pull_requests",
-        "apply_label"
+        "list_pull_requests",
+        "pull_request_read",
+        "issue_read",
+        "issue_write"
       ],
       "writeApprovalRequired": true
     }
   }
 }
-

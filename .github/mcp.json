@@ -4,11 +4,21 @@
       "type": "http",
       "url": "https://api.githubcopilot.com/mcp/readonly",
       "tools": [
-        "get_file_contents",
-        "list_issues",
-        "issue_read",
         "list_pull_requests",
         "get_pull_request"
+      ]
+    },
+    "github-mcp-server-approved-write": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${COPILOT_MCP_GITHUB_TOKEN}"
+      },
+      "tools": [
+        "list_pull_requests",
+        "get_pull_request",
+        "issue_read",
+        "issue_write"
       ]
     }
   }

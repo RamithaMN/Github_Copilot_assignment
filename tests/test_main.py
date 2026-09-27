@@ -18,9 +18,10 @@ def test_main_orchestrates_checks_and_renders_report(monkeypatch, tmp_path, caps
         calls["path"] = path
         return local_results
 
-    def fake_github_checks(service, repository):
+    def fake_github_checks(service, repository, *, inactive_days=30):
         calls["service"] = service
         calls["repository"] = repository
+        calls["inactive_days"] = inactive_days
         return github_results
 
     monkeypatch.setattr(main_module, "GitHubService", lambda token=None: FakeService())
@@ -35,6 +36,83 @@ def test_main_orchestrates_checks_and_renders_report(monkeypatch, tmp_path, caps
     assert calls["path"] == tmp_path
     assert isinstance(calls["service"], FakeService)
     assert calls["repository"] == "octo/project"
+    assert calls["inactive_days"] == 30
+
+
+def test_main_passes_inactive_days_to_github_checks(monkeypatch, tmp_path, capsys):
+    captured = {}
+
+    class FakeService:
+        pass
+
+    def fake_github_checks(service, repository, *, inactive_days=30):
+        captured["inactive_days"] = inactive_days
+        return []
+
+    monkeypatch.setattr(main_module, "GitHubService", lambda token=None: FakeService())
+    monkeypatch.setattr(main_module, "run_local_checks", lambda path: [])
+    monkeypatch.setattr(main_module, "run_github_checks", fake_github_checks)
+
+    assert main_module.main(
+        ["--path", str(tmp_path), "--repo", "octo/project", "--inactive-days", "45"]
+    ) == 0
+
+    assert captured["inactive_days"] == 45
+
+
+def test_main_refuses_label_write_without_confirmation(monkeypatch, tmp_path, capsys):
+    calls = []
+
+    class FakeService:
+        def list_open_pull_requests(self, repository):
+            return [{"number": 7, "title": "Old PR", "updated_at": "2020-01-01T00:00:00Z"}]
+
+        def apply_label(self, repository, issue_number, label):
+            calls.append((repository, issue_number, label))
+
+    monkeypatch.setattr(main_module, "GitHubService", lambda token=None: FakeService())
+    monkeypatch.setattr(main_module, "run_local_checks", lambda path: [])
+    monkeypatch.setattr(main_module, "run_github_checks", lambda service, repository, **kwargs: [])
+
+    assert main_module.main(
+        ["--path", str(tmp_path), "--repo", "octo/project", "--apply-needs-attention", "7"],
+        input_fn=lambda prompt: "n",
+    ) == 0
+
+    assert calls == []
+    assert "No external write performed." in capsys.readouterr().out
+
+
+def test_main_applies_and_verifies_label_after_confirmation(monkeypatch, tmp_path, capsys):
+    calls = []
+    responses = [
+        [{"number": 7, "title": "Old PR", "updated_at": "2020-01-01T00:00:00Z"}],
+        [{
+            "number": 7,
+            "title": "Old PR",
+            "updated_at": "2020-01-01T00:00:00Z",
+            "labels": [{"name": "needs-attention"}],
+        }],
+    ]
+
+    class FakeService:
+        def list_open_pull_requests(self, repository):
+            return responses.pop(0)
+
+        def apply_label(self, repository, issue_number, label):
+            calls.append((repository, issue_number, label))
+
+    monkeypatch.setattr(main_module, "GitHubService", lambda token=None: FakeService())
+    monkeypatch.setattr(main_module, "run_local_checks", lambda path: [])
+    monkeypatch.setattr(main_module, "run_github_checks", lambda service, repository, **kwargs: [])
+
+    assert main_module.main(
+        ["--path", str(tmp_path), "--repo", "octo/project", "--apply-needs-attention", "7"],
+        input_fn=lambda prompt: "yes",
+    ) == 0
+
+    assert calls == [("octo/project", 7, "needs-attention")]
+    assert "Applied and verified" in capsys.readouterr().out
 
 
 @pytest.mark.parametrize(

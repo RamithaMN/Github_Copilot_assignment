@@ -72,13 +72,22 @@ Its scope is read-only review with evidence-backed findings.
 
 The bounded sessions are:
 
-1. Add stale pull-request detection using `updated_at` and the 30-day rule. This was implemented and verified by the local pytest suite; no Copilot code-edit transcript is claimed.
+1. Implement the configurable stale-PR threshold in a multi-step session. A
+   deliberately failing CLI test was prepared first. Copilot ran it, read the
+   argparse failure, changed `src/main.py`, `src/checker.py`, tests, and
+   `README.md`, reran the focused test, and ran the full suite. The complete
+   evidence is in `docs/evidence/agent-session-q2-cli-threshold.md`.
 2. Correct the plugin integration after Copilot reported that the plugin directory lacked a root `plugin.json`.
 3. Run the read-only repository-reviewer agent with only `view`, `glob`, and `grep` available. The session inspected the repository and produced an observed tool trace.
 
 Evidence for the Copilot review and its failure/correction is in
 `docs/evidence/copilot-review-session.md`. The implementation itself is verified
 through the pytest suite and manual inspection.
+
+The first session is the primary Q2 handoff evidence: its focused failure,
+delegation boundary, approval decisions, multi-file edit, corrective rerun, and
+independent verification are all recorded. The older stale-PR session remains
+historical context, but is not used as the sole evidence for the requirement.
 
 The later approval-bound sessions are recorded in
 `docs/evidence/copilot-approval-prompts.md`. They show folder trust, approval of the
@@ -94,14 +103,36 @@ The actual scoped workspace configuration is `.github/mcp.json`; status is recor
 `docs/MCP_STATUS.md`. The older `docs/mcp/github-mcp.intended.json` is retained as the
 assignment-facing design record.
 
+The claim-to-receipt map is `docs/evidence/EVIDENCE_INDEX.md`. Redacted raw excerpts
+from the Copilot event store are in `docs/evidence/raw/`; they preserve the relevant
+commands, approval payload, errors, and outcomes without committing credentials or
+unrelated model context.
+
+The final tool surface is intentionally small: two pull-request read tools for the
+default server, and four pull-request/issue tools for the separately named approved-
+write server. Failure behavior and the limits of the Copilot transport are in
+`docs/mcp/FAILURE_HANDLING.md`; measured configuration cost is in
+`docs/evidence/github-mcp-context-cost.md`.
+
 The read loop was exercised against `rohitsundaram/Family-office-IC-agent` using the
 GitHub MCP pull-request read tool. It returned no open pull requests, so the stale
 decision was empty and no write was attempted. Evidence is in
 `docs/evidence/github-mcp-read-loop.md`.
 
-The write loop remains separately gated: enable the exact label-update tool, request
-approval, apply `needs-attention`, then re-fetch to verify when a real stale candidate
-exists. No external write is claimed in this session.
+The write path was tested against controlled PR #4 with the exact MCP tools enabled:
+`issue_write`, `issue_read`, `pull_request_read`, and `label_write`. Copilot fetched
+the PR, stated that the PR was not 30-day stale, requested approval for only the
+`needs-attention` label, and received approval. The first attempt returned
+`403: Must have admin rights to Repository`. The setup was corrected by supplying
+the authenticated runtime-only MCP header, then the approved retry applied the label
+and re-fetched the PR to verify it. An independent `gh` read confirmed the same
+external state.
+
+There was no open PR older than 30 days in the controlled repositories, so the
+session used `inactive_days=0` only as a clearly marked action-path demo. It does not
+claim that PR #4 satisfied the default 30-day stale rule. The full evidence, including
+the failed first iteration, successful retry, and context-cost analysis, is in
+`docs/evidence/github-mcp-write-attempt.md`.
 
 The account-wide repository selection audit is recorded in
 `docs/evidence/repository-selection.md`. It found zero open pull requests across
@@ -113,6 +144,10 @@ The application remains separate from this assignment workflow:
 CLI -> github_service.py -> GitHub REST API
 Copilot agent -> GitHub MCP server -> GitHub state/actions
 ```
+
+The assignment's successful-write loop is demonstrated as:
+`FETCH -> DECIDE -> APPROVE -> ACT -> RE-FETCH -> VERIFY`. The first failed
+iteration and the corrected setup are retained as evidence rather than hidden.
 
 ## Q4 - Plugin and approval governance
 
@@ -129,19 +164,18 @@ credentials, or permit GitHub writes. Vetting and proposed approval boundaries a
 
 ### Dead ends, failures, and abandoned ideas
 
-- The first `git init` attempt was blocked by the workspace filesystem permission around `.git`; retrying with the required elevated filesystem permission succeeded.
-- Python 3.12 was not installed in the active environment; the implementation remains compatible with Python 3.11 while declaring 3.12 as the assignment target.
-- `pytest` was not initially installed; it is declared in `requirements.txt` and must be installed in the project virtual environment before verification.
+- An unprivileged staging attempt was blocked by `.git/index.lock`; the literal error and the successful permission-corrected retry are recorded in `docs/evidence/setup-failures.md`.
+- Python 3.12 and pytest availability varied by environment. Because the literal setup output was not preserved, this is not used as a standalone scored claim; the preserved focused and full-suite receipts are authoritative.
 - The first Copilot review attempt used invalid tool names and initially detected the plugin only as a Codex-format package; both issues were corrected and recorded in the evidence file.
 - The resumed Copilot review contradicted its own observed read trace, so its summary was not accepted as authoritative evidence.
+- The first GitHub MCP write attempt reached explicit approval but was rejected with `403: Must have admin rights to Repository`. Adding the runtime-only Authorization header fixed the setup; the approved retry applied and verified the label. Both iterations are documented.
 - Automatic GitHub comments were deliberately not implemented; the planned external write is limited to an explicitly approved label action.
 
 ### What I would do differently with another week
 
-Run the project in the target Copilot environment, capture the three required agentic
-transcripts and real approval prompts, validate the exact Copilot plugin schema, and
-complete the live MCP fetch-decide-act-verify demonstration against a controlled test
-repository.
+With another week, repeat the live MCP loop against a repository with a genuinely
+30-day-stale PR, preserve provider token telemetry if the client exposes it, and
+validate the exact plugin schema against a second clean Copilot installation.
 
 ### How Copilot was used for this submission
 

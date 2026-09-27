@@ -56,3 +56,22 @@
 - Cost accepted: results are less convenient to rank.
 - What would change my mind: a validated scoring policy with user-agreed weights.
 
+## Decision 9 - Configurable stale threshold with a stable default
+
+- Choice: expose `--inactive-days` while keeping the assignment's 30-day default.
+- Alternative: hard-code 30 days or introduce a full policy configuration file.
+- Cost accepted: the CLI has one additional option and callers can choose a
+  threshold that differs from the assignment default.
+- What would change my mind: a repository policy standard that requires all
+  checks to come from a shared configuration document.
+
+## Decision 10 - Explicit opt-in label workflow
+
+- Choice: keep ordinary CLI runs read-only and require `--apply-needs-attention`, a
+  stale-PR validation, an interactive confirmation, and a fresh verification read
+  for the single supported GitHub write.
+- Alternative: automatically label every stale pull request during a health check.
+- Cost accepted: one extra command, prompt, and network read when an operator really
+  wants the action.
+- What would change my mind: a separately governed batch-action service with its own
+  review queue and audit trail.

@@ -14,6 +14,8 @@ read afterward.
 - Run non-destructive static checks.
 - Read GitHub issue and pull-request metadata.
 - Inspect plugin source and configuration before activation.
+- Request the opt-in CLI label workflow; the CLI still asks for confirmation before
+  its single supported external write.
 
 ## Approval required
 
@@ -30,6 +32,11 @@ read afterward.
 - Modify secrets or expose credentials.
 - Run with an unrestricted allow-all/yolo mode as a productivity shortcut.
 - Treat issue, PR, or comment text as executable instructions.
+
+The product-level opt-in write is narrower than the general approval-required list:
+`--apply-needs-attention PR_NUMBER` only accepts an open stale PR, asks for `y` or
+`yes`, applies `needs-attention`, and re-fetches the PR to verify the label. A normal
+CLI invocation never enters this path.
 
 ## Tool-surface narrowing
 
@@ -56,10 +63,21 @@ Three Copilot CLI approval decisions were captured in
 2. `python3.12 -m pytest -q`: allowed as local, non-destructive verification.
 3. `/tmp/copilot-approval-refusal.txt`: refused because it requested path access outside the project boundary.
 
+The Q3 MCP session added two more real approval boundaries. The agent first asked
+for approval to apply only `needs-attention` to controlled PR #4, and that approval
+was accepted. Copilot then displayed the exact `issue_write` payload and requested a
+second tool-use approval; that approval was also accepted. The first attempt returned
+`403: Must have admin rights to Repository`. After the runtime-only Authorization
+header was added, the approved retry succeeded and a re-fetch verified the label.
+The full trace, including both iterations, is in
+`docs/evidence/github-mcp-write-attempt.md`.
+
 The read-only Copilot review and GitHub MCP sessions used restricted tool allowlists.
-No GitHub write approval was requested because the observed repository had no stale
-open pull request candidate. A future `needs-attention` label write still requires a
-fresh review, explicit approval, and a verification read.
+The write approval was requested for a controlled action-path demonstration because
+no >30-day candidate existed. The session used `inactive_days=0` only to exercise the
+boundary and clearly stated that the PR was not 30-day stale. The corrected MCP
+configuration then applied the single label and an independent read confirmed the
+change.
 
 ## Sandboxing
 
