@@ -76,11 +76,20 @@ The bounded sessions are:
    deliberately failing CLI test was prepared first. Copilot ran it, read the
    argparse failure, changed `src/main.py`, `src/checker.py`, tests, and
    `README.md`, reran the focused test, and ran the full suite. The complete
-   evidence is in `docs/evidence/agent-session-q2-cli-threshold.md`.
-2. Correct the plugin integration after Copilot reported that the plugin directory lacked a root `plugin.json`.
-3. Run the read-only repository-reviewer agent with only `view`, `glob`, and `grep` available. The session inspected the repository and produced an observed tool trace.
+   evidence is in [`agent-session-q2-cli-threshold.md`](docs/evidence/agent-session-q2-cli-threshold.md),
+   with the redacted raw excerpt and commit [`44661b4`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/44661b4).
+2. Run a bounded reviewer setup, observe invalid tool names and plugin discovery
+   failure, then correct the instruction/tool setup and rerun. This is documented
+   end to end in [`agent-session-q2-reviewer-correction.md`](docs/evidence/agent-session-q2-reviewer-correction.md).
+3. Run the read-only `repo-reviewer` custom agent with only `view`, `glob`, and
+   `grep` available. The session inspected the repository, found missing CLI
+   coverage, and handed the follow-up back to the human. Evidence is in
+   [`copilot-review-session-2026-09-26.md`](docs/evidence/copilot-review-session-2026-09-26.md)
+   and the read-only agent boundary is preserved by commit
+   [`befcf86`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/befcf86).
 
-Evidence for the Copilot review and its failure/correction is in
+Evidence for the reviewer setup failure and correction is in
+`docs/evidence/agent-session-q2-reviewer-correction.md` and
 `docs/evidence/copilot-review-session.md`. The implementation itself is verified
 through the pytest suite and manual inspection.
 
@@ -96,6 +105,17 @@ Python 3.12 test command, and refusal of an out-of-scope path write.
 A fresh read-only `repo-reviewer` session and its human follow-up are recorded in
 `docs/evidence/copilot-review-session-2026-09-26.md`. The agent found the missing CLI
 coverage; the human added `tests/test_main.py` and reran the full Python 3.12 suite.
+
+### Task-sizing rule
+
+I handed over bounded, reversible work freely: one health check, focused tests,
+small refactors, documentation drafts, and read-only repository review. These tasks
+had a narrow input/output contract and could be checked locally. I kept architecture,
+dependency installation, MCP or plugin configuration, permission changes, external
+GitHub writes, pushes, and merges on a short leash because they change trust
+boundaries, external state, or repository history. The thresholds and approvals are
+visible in the Q2 session prompt, the reviewer agent definition, and
+`APPROVALS.md`.
 
 ## Q3 - MCP integration
 
