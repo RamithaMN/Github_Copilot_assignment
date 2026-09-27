@@ -14,8 +14,7 @@ and unrelated repository listings are omitted.
 | Real approval prompts included an allow and a refusal. | [`45cbe7c`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/45cbe7c), [approval records](copilot-approval-prompts.md) |
 | The MCP write first failed, then succeeded after runtime authentication was fixed. | [`050c714`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/050c714), [`555ce03`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/555ce03), [redacted MCP transcript](raw/copilot-mcp-session-redacted.md), [PR #4](https://github.com/RamithaMN/Github_Copilot_assignment/pull/4) |
 | The current suite passes. | [latest verification receipt](latest-verification.md) |
-| The final branch is not the same as `main`. | `main` is at `b7f3e24`; the submission branch contains `555ce03` plus the evidence commits on `q2-agent-cli-threshold`. No squash was performed. |
+| The final branch history is preserved without squashing. | `main` contains merge commit [`37d98dd`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/37d98dd) plus follow-up merge [`ead59cd`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/ead59cd); the source branch contains [`677ed16`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/677ed16). |
 
-The last row is intentionally explicit: submit the branch or merge it into `main`
-without squashing. The repository's approval policy does not permit an automatic
-merge without an explicit user decision.
+The last row is intentionally explicit: the submission is now on `main` through
+regular merge commits, and the source branch remains available for inspection.
