@@ -134,6 +134,13 @@ claim that PR #4 satisfied the default 30-day stale rule. The full evidence, inc
 the failed first iteration, successful retry, and context-cost analysis, is in
 `docs/evidence/github-mcp-write-attempt.md`.
 
+The historical Copilot event store retained exact token receipts for both write
+iterations, including tool-definition tokens and session totals. Those figures
+are preserved in `docs/evidence/github-mcp-historical-token-telemetry.md`. The
+three bounded failure policies were executed through injected transport fixtures
+and recorded in `docs/evidence/github-mcp-failure-simulations-2026-09-27.md`;
+each ended `UNKNOWN` with no write attempted.
+
 The account-wide repository selection audit is recorded in
 `docs/evidence/repository-selection.md`. It found zero open pull requests across
 `RamithaMN`, so no legitimate stale candidate existed for the write demonstration.
@@ -174,9 +181,9 @@ credentials, or permit GitHub writes. Vetting and proposed approval boundaries a
 ### What I would do differently with another week
 
 With another week, repeat the live MCP loop against a repository with a genuinely
-30-day-stale PR, capture `/context` and `/usage`, enable OpenTelemetry file export
-for token/tool attribution, and validate the exact plugin schema against a second
-clean Copilot installation.
+30-day-stale PR, obtain a provider-supported MCP-only token breakdown rather than
+the exact whole-session/tool-definition totals already preserved, and validate the
+exact plugin schema against a second clean Copilot installation.
 
 ### How Copilot was used for this submission
 

@@ -1,11 +1,17 @@
 # GitHub MCP Context Cost
 
-The captured MCP session did not record MCP-specific token telemetry. Copilot CLI
-does support `/context`, which reports MCP tool context usage, and `/usage`, which
-reports session and per-model token totals. Copilot CLI can also export token and
-tool metrics through OpenTelemetry. None of those measurements were enabled or
-saved during the historical MCP run, so the exact historical MCP overhead is not
-retroactively reconstructable.
+The first version of this record said that the historical MCP session had no
+recoverable token telemetry. That was too broad. Copilot CLI's local event store
+retained exact usage checkpoints and shutdown receipts for both historical write
+sessions. The redacted receipt is
+`github-mcp-historical-token-telemetry.md`.
+
+The historical sessions did not use `/context`, `/usage`, `--usage-output-file`,
+or OpenTelemetry. A resumed `/context` capture was attempted later, but Copilot
+treated the non-interactive input as an ordinary prompt; that failed attempt is
+explicitly not counted as a snapshot. The event-store receipts are therefore the
+authoritative historical measurement, while the separate fresh run below proves
+the supported `--usage-output-file` path.
 
 This record therefore uses reproducible character counts as a lower-level proxy and
 records the exact tool reduction. The proxy is clearly not a provider token count.
@@ -34,8 +40,8 @@ two enabled MCP tool definitions. The MCP call returned `[]` in `2` result-conte
 bytes and took `3,092 ms` of API time. The full redacted receipt is
 `docs/evidence/github-mcp-token-telemetry-2026-09-27.md`.
 
-This is a new measured read-only run. It does not retroactively measure the earlier
-write session, whose exact telemetry was not captured.
+This is a new measured read-only run. It complements, rather than replaces, the
+historical event-store telemetry; it does not change the historical write outcome.
 
 For a future measurement, capture `/context` before and after MCP activation, capture
 `/usage` at the end of the session, and enable Copilot CLI OpenTelemetry file export
