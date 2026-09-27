@@ -8,5 +8,6 @@
 - Do not commit credentials or claim an external result that was not observed.
 - Use only tool names exposed by the current Copilot session; never invent tool names. If a requested tool is unavailable, report that limitation and stop rather than guessing.
 - When a resumed summary conflicts with the observed tool trace, treat the tool trace as authoritative and report only facts supported by it.
+- For MCP failures, do not infer missing state: stop on authentication, outage, timeout, or malformed responses; retry at most one read after a transient failure, and never retry an external write automatically.
 - When changing checker behavior, add focused tests and then run the full `pytest` suite.
 - Prefer evidence-bearing error messages over silent fallbacks.

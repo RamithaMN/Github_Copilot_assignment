@@ -7,8 +7,7 @@
         "list_pull_requests",
         "pull_request_read",
         "issue_read",
-        "issue_write",
-        "label_write"
+        "issue_write"
       ],
       "writeApprovalRequired": true
     }

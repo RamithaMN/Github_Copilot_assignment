@@ -5,7 +5,7 @@
 - CLI: GitHub Copilot CLI 1.0.88
 - Session name: `github-mcp-read-loop`
 - Repository: `rohitsundaram/Family-office-IC-agent`
-- Tool boundary: `github-mcp-server-list_pull_requests` and `github-mcp-server-pull_request_read`
+- Tool boundary: `github-mcp-server-list_pull_requests` and `github-mcp-server-get_pull_request`
 - Writes, shell, web fetch, and unrelated GitHub MCP tools were unavailable.
 
 ## Observed result
@@ -22,4 +22,3 @@ so there are no PRs to classify.
 This completed the fetch and decide steps. No `needs-attention` label was applied
 because there was no stale pull request candidate. A write approval was therefore
 not requested, and no external state changed.
-

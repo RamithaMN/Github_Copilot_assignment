@@ -60,8 +60,11 @@ The Copilot CLI session enabled only these additional built-in GitHub MCP tools:
 --add-github-mcp-tool label_write
 ```
 
-The workspace write server exposed only the corresponding read and label-update
-operations. Repository authentication was supplied at runtime:
+The historical session enabled the four read/write tools above. The final committed
+workspace write server is narrower: it exposes `list_pull_requests`,
+`get_pull_request`, `issue_read`, and `issue_write`; `label_write` is not enabled
+because the observed action used `issue_write`. Repository authentication was
+supplied at runtime:
 
 ```json
 "headers": {
@@ -118,9 +121,10 @@ The implementation does not claim otherwise.
 
 ## Context cost and trimming
 
-The read-only server exposes five tools: `get_file_contents`, `list_issues`,
-`issue_read`, `list_pull_requests`, and `get_pull_request`. The write session added
-only `issue_write`, `issue_read`, `pull_request_read`, and `label_write`.
+The historical read-only configuration exposed five tools and the write session
+added four action tools. The final committed configuration exposes only two read
+tools and four approved-write tools; the exact reduction is measured in
+`docs/evidence/github-mcp-context-cost.md`.
 Repository-wide search, diffs, comments, actions, merges, branch writes, file writes,
 and deletion tools were excluded.
 
