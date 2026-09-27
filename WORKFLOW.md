@@ -103,6 +103,11 @@ The actual scoped workspace configuration is `.github/mcp.json`; status is recor
 `docs/MCP_STATUS.md`. The older `docs/mcp/github-mcp.intended.json` is retained as the
 assignment-facing design record.
 
+The claim-to-receipt map is `docs/evidence/EVIDENCE_INDEX.md`. Redacted raw excerpts
+from the Copilot event store are in `docs/evidence/raw/`; they preserve the relevant
+commands, approval payload, errors, and outcomes without committing credentials or
+unrelated model context.
+
 The final tool surface is intentionally small: two pull-request read tools for the
 default server, and four pull-request/issue tools for the separately named approved-
 write server. Failure behavior and the limits of the Copilot transport are in
@@ -159,9 +164,8 @@ credentials, or permit GitHub writes. Vetting and proposed approval boundaries a
 
 ### Dead ends, failures, and abandoned ideas
 
-- The first `git init` attempt was blocked by the workspace filesystem permission around `.git`; retrying with the required elevated filesystem permission succeeded.
-- Python 3.12 was not installed in the active environment; the implementation remains compatible with Python 3.11 while declaring 3.12 as the assignment target.
-- `pytest` was not initially installed; it is declared in `requirements.txt` and must be installed in the project virtual environment before verification.
+- An unprivileged staging attempt was blocked by `.git/index.lock`; the literal error and the successful permission-corrected retry are recorded in `docs/evidence/setup-failures.md`.
+- Python 3.12 and pytest availability varied by environment. Because the literal setup output was not preserved, this is not used as a standalone scored claim; the preserved focused and full-suite receipts are authoritative.
 - The first Copilot review attempt used invalid tool names and initially detected the plugin only as a Codex-format package; both issues were corrected and recorded in the evidence file.
 - The resumed Copilot review contradicted its own observed read trace, so its summary was not accepted as authoritative evidence.
 - The first GitHub MCP write attempt reached explicit approval but was rejected with `403: Must have admin rights to Repository`. Adding the runtime-only Authorization header fixed the setup; the approved retry applied and verified the label. Both iterations are documented.
@@ -169,9 +173,9 @@ credentials, or permit GitHub writes. Vetting and proposed approval boundaries a
 
 ### What I would do differently with another week
 
-Run the project in the target Copilot environment, capture the three required agentic
-transcripts and real approval prompts, validate the exact Copilot plugin schema, and
-repeat the live MCP loop against a repository with a genuinely 30-day-stale PR.
+With another week, repeat the live MCP loop against a repository with a genuinely
+30-day-stale PR, preserve provider token telemetry if the client exposes it, and
+validate the exact plugin schema against a second clean Copilot installation.
 
 ### How Copilot was used for this submission
 
