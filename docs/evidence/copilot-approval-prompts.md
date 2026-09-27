@@ -73,3 +73,30 @@ The user rejected this tool call.
 ```
 
 No repository file was changed and the requested temporary file was not created.
+
+## Session D: MCP write approval
+
+The following is the redacted permission event emitted by Copilot CLI immediately
+before the external write. It is the exact structured approval payload, rather than a
+paraphrase of the action:
+
+```json
+{
+  "kind": "mcp",
+  "serverName": "github-mcp-server-approved-write",
+  "toolName": "github-mcp-server-approved-write-issue_write",
+  "args": {
+    "owner": "RamithaMN",
+    "repo": "Github_Copilot_assignment",
+    "issue_number": 4,
+    "method": "update",
+    "labels": ["needs-attention"]
+  }
+}
+```
+
+Decision: selected approval for this exact one-label update. The first invocation
+returned `403: Must have admin rights to Repository`; after the runtime-only
+Authorization header was added, the same approved operation succeeded and the
+re-fetch verified `needs-attention`. The full redacted event excerpt is in
+`docs/evidence/raw/copilot-mcp-session-redacted.md`.

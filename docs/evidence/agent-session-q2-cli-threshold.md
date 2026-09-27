@@ -100,5 +100,6 @@ The result was accepted only after all of these checks passed:
   network change.
 
 The session stopped after the full suite passed, matching the explicit stopping
-condition in the prompt. The branch and its resulting commit provide the Git
-history link for this evidence.
+condition in the prompt. The documented session result is preserved by commit
+[`44661b4`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/44661b4)
+on branch `q2-agent-cli-threshold`.
