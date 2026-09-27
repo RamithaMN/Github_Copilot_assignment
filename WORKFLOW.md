@@ -174,8 +174,9 @@ credentials, or permit GitHub writes. Vetting and proposed approval boundaries a
 ### What I would do differently with another week
 
 With another week, repeat the live MCP loop against a repository with a genuinely
-30-day-stale PR, preserve provider token telemetry if the client exposes it, and
-validate the exact plugin schema against a second clean Copilot installation.
+30-day-stale PR, capture `/context` and `/usage`, enable OpenTelemetry file export
+for token/tool attribution, and validate the exact plugin schema against a second
+clean Copilot installation.
 
 ### How Copilot was used for this submission
 

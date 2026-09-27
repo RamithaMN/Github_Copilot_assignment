@@ -58,6 +58,9 @@ separately named approved-write server. Credentials belong in the environment, n
 in this repository.
 
 Failure handling is specified in `docs/mcp/FAILURE_HANDLING.md`. The Copilot CLI did
-not expose a portable per-server timeout field, so the repository documents a bounded
-session policy: one human-directed retry for a transient read, no automatic write
-retry, and no action after an outage or malformed response.
+not expose a portable per-server timeout field in the captured setup, so the
+repository documents a bounded session policy: one human-directed retry for a
+transient read, no automatic write retry, and no action after an outage or malformed
+response. Copilot's `/context`, `/usage`, and OpenTelemetry features could have
+captured exact token/tool telemetry, but they were not enabled during the historical
+MCP session; only configuration proxies are available for that run.
