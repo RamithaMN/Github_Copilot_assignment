@@ -81,11 +81,15 @@ The bounded sessions are:
 2. Run a bounded reviewer setup, observe invalid tool names and plugin discovery
    failure, then correct the instruction/tool setup and rerun. This is documented
    end to end in [`agent-session-q2-reviewer-correction.md`](docs/evidence/agent-session-q2-reviewer-correction.md).
-3. Run the read-only `repo-reviewer` custom agent with only `view`, `glob`, and
-   `grep` available. The session inspected the repository, found missing CLI
-   coverage, and handed the follow-up back to the human. Evidence is in
-   [`copilot-review-session-2026-09-26.md`](docs/evidence/copilot-review-session-2026-09-26.md)
-   and the read-only agent boundary is preserved by commit
+3. Run a fresh, independently identified read-only `repo-reviewer` session on a
+   fixture that deliberately omitted `tests/test_main.py`. Its own session ID,
+   exact handoff, tool trace, verbatim CLI-coverage finding, and stopping-policy
+   limitation are in
+   [`agent-session-q2-third-reviewer-2026-09-27.md`](docs/evidence/agent-session-q2-third-reviewer-2026-09-27.md).
+   The human follow-up is directly linked to commit
+   [`e42a709`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/e42a709),
+   which added the missing CLI coverage; the read-only agent boundary is
+   preserved by commit
    [`befcf86`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/befcf86).
 
 Evidence for the reviewer setup failure and correction is in
@@ -102,9 +106,11 @@ The later approval-bound sessions are recorded in
 `docs/evidence/copilot-approval-prompts.md`. They show folder trust, approval of the
 Python 3.12 test command, and refusal of an out-of-scope path write.
 
-A fresh read-only `repo-reviewer` session and its human follow-up are recorded in
-`docs/evidence/copilot-review-session-2026-09-26.md`. The agent found the missing CLI
-coverage; the human added `tests/test_main.py` and reran the full Python 3.12 suite.
+The historical reviewer session remains in
+`docs/evidence/copilot-review-session-2026-09-26.md`; the fresh independent receipt
+above is the authoritative third-session trace. The agent found the missing CLI
+coverage in the deliberately incomplete fixture; the human added `tests/test_main.py`
+in commit `e42a709` and reran the full Python 3.12 suite.
 
 ### Task-sizing rule
 
