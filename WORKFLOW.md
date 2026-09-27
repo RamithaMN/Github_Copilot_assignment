@@ -83,9 +83,10 @@ The bounded sessions are:
    end to end in [`agent-session-q2-reviewer-correction.md`](docs/evidence/agent-session-q2-reviewer-correction.md).
 3. Run a fresh, independently identified read-only `repo-reviewer` session on a
    fixture that deliberately omitted `tests/test_main.py`. Its own session ID,
-   exact handoff, tool trace, verbatim CLI-coverage finding, and stopping-policy
-   limitation are in
+   exact handoff, tool trace, and verbatim CLI-coverage finding are in
    [`agent-session-q2-third-reviewer-2026-09-27.md`](docs/evidence/agent-session-q2-third-reviewer-2026-09-27.md).
+   A separate follow-up captured the exact requested stopping marker in
+   [`agent-session-q2-stopping-marker-2026-09-27.md`](docs/evidence/agent-session-q2-stopping-marker-2026-09-27.md).
    The human follow-up is directly linked to commit
    [`e42a709`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/e42a709),
    which added the missing CLI coverage; the read-only agent boundary is

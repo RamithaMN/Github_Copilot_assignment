@@ -52,10 +52,10 @@ The preserved event-store `summary_text` was:
 I’m realizing that the CLI entry point lacks direct automated coverage. The `src/main.py` defines various functions, but the listed tests don’t import or call them. I need to cite all test files to ensure clarity on what's covered. Since the runtime is unverified, I should make sure my findings are precise and that everything ends exactly right. No further tooling will be involved from here.
 ```
 
-The prompt requested the stopping marker `STOP: REVIEW COMPLETE`. The captured
-event stream preserves the completed reasoning summary and exit code, but not a
-separate final-text event containing that marker. This receipt therefore claims
-only the observed finding, read-only trace, and successful session completion.
+The original run did not preserve a separate final-text event containing the
+requested stopping marker. A fresh follow-up run closed that evidence gap and
+captured the marker exactly; see
+[`agent-session-q2-stopping-marker-2026-09-27.md`](agent-session-q2-stopping-marker-2026-09-27.md).
 
 ## Human follow-up and verification
 
