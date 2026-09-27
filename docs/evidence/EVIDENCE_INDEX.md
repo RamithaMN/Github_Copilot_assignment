@@ -16,6 +16,7 @@ and unrelated repository listings are omitted.
 | A follow-up MCP run recorded exact token/tool telemetry. | [token telemetry receipt](github-mcp-token-telemetry-2026-09-27.md), [context-cost analysis](github-mcp-context-cost.md) |
 | Historical MCP write sessions have exact event-store usage receipts. | [historical telemetry receipt](github-mcp-historical-token-telemetry.md) |
 | Slow, unavailable, and malformed MCP responses stop safely without writes. | [failure simulation receipt](github-mcp-failure-simulations-2026-09-27.md) |
+| Q4 plugin vetting, persisted permission state, sandboxing, and enterprise impact were observed. | [Q4 permission-state receipt](q4-permission-state-2026-09-27.md) |
 | The current suite passes. | [latest verification receipt](latest-verification.md) |
 | The final branch history is preserved without squashing. | `main` contains merge commit [`37d98dd`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/37d98dd) plus follow-up merge [`ead59cd`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/ead59cd); the source branch contains [`677ed16`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/677ed16). |
 

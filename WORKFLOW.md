@@ -165,7 +165,11 @@ through Copilot's plugin discovery warning.
 
 The plugin was kept small and read-oriented. It does not duplicate the CLI, expose
 credentials, or permit GitHub writes. Vetting and proposed approval boundaries are in
-`APPROVALS.md`.
+`APPROVALS.md`. Repository instructions remain project-specific behavior; the plugin
+packages the reusable review skill so the same bounded capability can be reused in a
+different repository. The actual manifest, state inspection, permission persistence,
+sandbox, and enterprise-policy receipts are in
+`docs/evidence/q4-permission-state-2026-09-27.md`.
 
 ## What didn't work
 

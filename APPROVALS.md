@@ -44,11 +44,27 @@ The intended MCP surface is limited to listing open issues, listing open pull re
 and applying one explicitly approved label. The local review plugin is read-oriented
 and does not provide GitHub write tools.
 
+The repository instruction layer is project-specific behavior: architecture, test
+requirements, untrusted-text handling, and the health-check vocabulary. The plugin
+is a reusable capability: it packages the read-only repository-review skill so the
+same review boundary can be applied to another repository. The plugin was not used
+to duplicate the CLI or to add credentials, hooks, network access, or GitHub writes.
+Its source and manifest were inspected before activation; the actual review is in
+`docs/evidence/q4-permission-state-2026-09-27.md`.
+
 ## Persisted permissions
 
-Persisted permissions must be limited to the project path and required GitHub endpoint
-scope. They should be reviewed after setup and reset if the task or repository changes.
-Credentials must remain environment-provided.
+The observed Copilot state contained only the GitHub login metadata in
+`~/.copilot/config.json` and `"experimental": true` in `~/.copilot/settings.json`.
+No `permissions-config.json`, `allowedUrls`, path allowlist, or tool allowlist was
+present. Folder trust was explicitly accepted for the current session only, and the
+out-of-scope `/tmp` write was refused. The exact state inspection and persistence
+boundary are recorded in
+`docs/evidence/q4-permission-state-2026-09-27.md`.
+
+No durable permission reset was needed after this experiment because no durable
+permission state was created. Future durable allowlists must be reviewed and reset
+when the repository or task changes. Credentials remain environment-provided.
 
 ## Real approval evidence
 
@@ -81,11 +97,19 @@ change.
 
 ## Sandboxing
 
-Keep execution inside the project workspace where possible. Network access is limited
-to the documented GitHub integration. Never place tokens in files or command output.
+The installed CLI's observed default is the current directory and descendants plus
+the temporary directory; `--allow-all-paths` was not used. The read-only reviewer
+could see only `view`, `glob`, and `grep`, so it could not run arbitrary shell commands
+or edit files. The implementation session had shell and edit tools only for the
+bounded repository task and still required command approval. Network access was
+limited to the documented GitHub integration, and tokens were never placed in files
+or command output. The exact CLI semantics and session allowlists are in
+`docs/evidence/q4-permission-state-2026-09-27.md`.
 
 ## Enterprise-policy impact
 
-If MCP, plugin activation, Copilot CLI, or external writes are blocked, retain the
-intended configuration and document the limitation. Use mocked GitHub responses for
-product tests and do not claim the blocked live workflow succeeded.
+The environment-specific impact matrix is recorded in
+`docs/evidence/q4-permission-state-2026-09-27.md`: MCP or plugin restrictions would
+remove only the live/reusable capability, while the product's mocked tests and
+narrow local workflow remain usable. A blocked external write must never be reported
+as successful.
