@@ -92,11 +92,15 @@ The suite was verified with Python 3.12:
 21 passed in 0.25s
 ```
 
+**Total time spent:** Approximately 6 hours, including implementation, testing,
+Copilot sessions, MCP verification, and evidence preparation.
+
 The observed Git activity window for implementation was 51 minutes, from the first
 implementation commit [`c11d18b`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/c11d18b)
 at 14:42:34 to the verification commit [`d72b973`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/d72b973)
 at 15:33:14 on 2026-09-26 (+04:00). This is a lower-bound repository activity
-measure; it excludes unrecorded planning and review time.
+measure within the broader six-hour estimate; it excludes unrecorded planning and
+review time.
 
 ## Submission evidence
 

@@ -226,9 +226,9 @@ iteration and the corrected setup are retained as evidence rather than hidden.
 ## Q4 - Plugin and approval governance
 
 The local plugin is under `plugins/repository-health-review/`. It contains the
-Codex-compatible manifest at `.codex-plugin/plugin.json`, the Copilot root
-`plugin.json`, and a reusable review skill. The root manifest correction was observed
-through Copilot's plugin discovery warning.
+Copilot root `plugin.json` and a reusable review skill. The root manifest correction
+was observed through Copilot's plugin discovery warning; the unused Codex-only
+manifest was removed to keep the submission focused on Copilot.
 
 The plugin was kept small and read-oriented. It does not duplicate the CLI, expose
 credentials, or permit GitHub writes. Vetting and proposed approval boundaries are in

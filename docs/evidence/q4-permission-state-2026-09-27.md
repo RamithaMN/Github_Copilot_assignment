@@ -72,7 +72,7 @@ The authored plugin was reviewed before use:
 | Surface | Observed result | Decision |
 | --- | --- | --- |
 | Root manifest | `plugins/repository-health-review/plugin.json` is valid JSON and declares no tools, hooks, MCP servers, or credentials. | Allow as a small reusable capability. |
-| Codex manifest | `.codex-plugin/plugin.json` is a separate Codex-compatible scaffold. | Keep it separate from the Copilot root manifest. |
+| Codex manifest | The optional `.codex-plugin/plugin.json` compatibility file was removed before submission. | Keep the submission focused on the Copilot plugin route. |
 | Skill | `skills/repository-health-review/SKILL.md` is read-oriented and requires evidence-backed `PASS`, `WARNING`, `FAIL`, or `UNKNOWN` findings. | Allow; no shell, write, or GitHub-write instruction. |
 | Network/MCP | No network endpoint or MCP server is declared by the plugin. | No additional network access. |
 | Credentials | No token, secret, or credential lookup is declared. | Credentials remain environment-only. |
