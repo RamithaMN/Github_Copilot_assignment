@@ -59,7 +59,7 @@ captured the marker exactly; see
 
 ## Human follow-up and verification
 
-The finding was handed back to the human. Commit [`e42a709`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/e42a709)
+The finding was handed back to the human. Commit [`d72b973`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/d72b973)
 added `tests/test_main.py` for direct CLI-entrypoint coverage and updated the
 review evidence. The independent verification after that follow-up was:
 

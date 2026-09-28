@@ -77,7 +77,7 @@ The bounded sessions are:
    argparse failure, changed `src/main.py`, `src/checker.py`, tests, and
    `README.md`, reran the focused test, and ran the full suite. The complete
    evidence is in [`agent-session-q2-cli-threshold.md`](docs/evidence/agent-session-q2-cli-threshold.md),
-   with the redacted raw excerpt and commit [`44661b4`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/44661b4).
+   with the redacted raw excerpt and commit [`7c34db9`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/7c34db9).
 2. Run a bounded reviewer setup, observe invalid tool names and plugin discovery
    failure, then correct the instruction/tool setup and rerun. This is documented
    end to end in [`agent-session-q2-reviewer-correction.md`](docs/evidence/agent-session-q2-reviewer-correction.md).
@@ -88,10 +88,10 @@ The bounded sessions are:
    A separate follow-up captured the exact requested stopping marker in
    [`agent-session-q2-stopping-marker-2026-09-27.md`](docs/evidence/agent-session-q2-stopping-marker-2026-09-27.md).
    The human follow-up is directly linked to commit
-   [`e42a709`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/e42a709),
+   [`d72b973`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/d72b973),
    which added the missing CLI coverage; the read-only agent boundary is
    preserved by commit
-   [`befcf86`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/befcf86).
+   [`b82f63d`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/b82f63d).
 
 Evidence for the reviewer setup failure and correction is in
 `docs/evidence/agent-session-q2-reviewer-correction.md` and
@@ -111,7 +111,7 @@ The historical reviewer session remains in
 `docs/evidence/copilot-review-session-2026-09-26.md`; the fresh independent receipt
 above is the authoritative third-session trace. The agent found the missing CLI
 coverage in the deliberately incomplete fixture; the human added `tests/test_main.py`
-in commit `e42a709` and reran the full Python 3.12 suite.
+in commit `d72b973` and reran the full Python 3.12 suite.
 
 ### Task-sizing rule
 

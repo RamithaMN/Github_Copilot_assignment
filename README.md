@@ -93,8 +93,8 @@ The suite was verified with Python 3.12:
 ```
 
 The observed Git activity window for implementation was 51 minutes, from the first
-implementation commit [`45a2133`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/45a2133)
-at 14:42:34 to the verification commit [`e42a709`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/e42a709)
+implementation commit [`c11d18b`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/c11d18b)
+at 14:42:34 to the verification commit [`d72b973`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/d72b973)
 at 15:33:14 on 2026-09-26 (+04:00). This is a lower-bound repository activity
 measure; it excludes unrecorded planning and review time.
 

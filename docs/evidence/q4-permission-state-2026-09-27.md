@@ -79,16 +79,16 @@ The authored plugin was reviewed before use:
 
 The first Copilot review reported that the root `plugin.json` was missing. Adding
 that manifest corrected discovery; the before/after is recorded in
-`copilot-review-session.md` and the correction is in commit `6feeb12`.
+`copilot-review-session.md` and the correction is in commit `3bb63fd`.
 
 ## Permission tightening
 
 The initial MCP design exposed five read/write tools. The committed correction
 narrowed the default read server to two pull-request tools and kept four metadata
 and action tools behind a separately named approved-write server. The change is
-recorded by commits `555ce03` and `ff6c746`, with the final state in
+recorded by commits `ea7fa6a` and `36d6551`, with the final state in
 `.github/mcp.json`. The read-only reviewer was independently narrowed to
-`view`, `glob`, and `grep` in commit `befcf86`.
+`view`, `glob`, and `grep` in commit `b82f63d`.
 
 ## Enterprise-policy impact
 

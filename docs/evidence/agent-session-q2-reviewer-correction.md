@@ -33,9 +33,9 @@ If a requested tool is unavailable, report that limitation and stop rather than 
 ```
 
 The instruction is present in `.github/copilot-instructions.md` and is preserved by
-commit [`6feeb12`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/6feeb12).
+commit [`3bb63fd`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/3bb63fd).
 The root Copilot plugin manifest is preserved by
-[`3fab71e`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/3fab71e).
+[`28ec0a3`](https://github.com/RamithaMN/Github_Copilot_assignment/commit/28ec0a3).
 The evidence deliberately distinguishes those two setup corrections rather than
 claiming that the agent edited the plugin itself during the review.
 

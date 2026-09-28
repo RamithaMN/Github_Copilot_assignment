@@ -1,6 +1,6 @@
 # Latest Verification Receipt
 
-Observed on 2026-09-27 from commit `23640ab`:
+Observed on 2026-09-27 from commit `094b281`:
 
 ```text
 $ python3.12 -m pytest -q
@@ -14,4 +14,4 @@ $ git diff --check
 ```
 
 The JSON validation command also reported both MCP configuration files as valid
-JSON. The working tree was clean after commit `23640ab`.
+JSON. The working tree was clean after commit `094b281`.
